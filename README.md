@@ -7,3 +7,10 @@ docker run --rm -v $(pwd)/migrate/config.yml:/cassandra-migrate.yml -v $(pwd)/mi
 docker run --rm -v $(pwd)/migrate/config.yml:/cassandra-migrate.yml -v $(pwd)/migrations:/migrations --network external-example justdomepaul/cassandra-migrate -H cassandra -p 9042 generate first
 
 
+
+
+
+
+docker run --rm -it --entrypoint sh justdomepaul/cassandra-migrate
+
+

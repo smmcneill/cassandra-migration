@@ -3,8 +3,20 @@ services:
   cassandra:
     image: cassandra
     container_name: cassandra
-    ports: 
-      - "9042:9042"
-networks: 
-  default: 
-    name: external-example
+  migrate:
+    image: justdomepaul/cassandra-migrate
+    container_name: migrate
+    volumes: 
+      - ./migrate/config.yml:/cassandra-migrate.yml
+      - ./migrate/wait-for.sh:/wait-for.sh
+      - ./migrations:/migrations
+    entrypoint:
+      - "./wait-for.sh"
+      - "cassandra:9042"
+      - "-t 200"
+      - "--"
+      - "sh"
+      - "-c"
+      - "cassandra-migrate -H cassandra -p 9042 migrate"
+    depends_on:
+      - cassandra

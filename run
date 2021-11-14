@@ -17,7 +17,7 @@ function migration:reset(){
         -v $(pwd)/migrate/config.yml:/cassandra-migrate.yml \
         -v $(pwd)/migrations:/migrations \
         justdomepaul/cassandra-migrate \
-        -H host.docker.internal -p 9042 reset
+        -H host.docker.internal -p 9042 reset $1
 }
 
 # Presuming that cassandra container is up and running, sends you into cqlsh session

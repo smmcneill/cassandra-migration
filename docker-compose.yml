@@ -3,6 +3,8 @@ services:
   cassandra:
     image: cassandra
     container_name: cassandra
+    ports:
+      - "9042:9042"
   migrate:
     image: justdomepaul/cassandra-migrate
     container_name: migrate

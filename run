@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function migration:new(){
+    docker run \
+        --rm \
+        -v $(pwd)/migrate/config.yml:/cassandra-migrate.yml \
+        -v $(pwd)/migrations:/migrations \
+        justdomepaul/cassandra-migrate \
+        generate $1 2>/dev/null
+}
+
+function cql(){
+    docker exec -it cassandra cqlsh
+}
+
+function up(){
+    docker compose down
+    docker compose up -d
+    while :; do
+        val="$(docker ps -q -f name=migrate)"
+        echo "Warming up"
+        if [ -z "$val" ]; then
+            go test ./...
+            exit 0
+        else
+            sleep 3
+        fi        
+    done
+}
+
+"$@"

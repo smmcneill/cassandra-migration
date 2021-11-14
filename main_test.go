@@ -9,29 +9,25 @@ import (
 
 func TestMe(t *testing.T) {
 	cluster := gocql.NewCluster("127.0.0.1")
-	cluster.Keyspace = "herbie"
+	cluster.Keyspace = "hello"
 	session, err := cluster.CreateSession()
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer session.Close()
 
-	if err := session.Query(`INSERT INTO shannon (shannon_id, emp_city, emp_name) VALUES (?, ?, ?)`,
-		1, "Hoboken", "Shannon").Exec(); err != nil {
+	if err := session.Query(`INSERT INTO person (id, first_name, last_name, city) VALUES (?, ?, ?, ?)`,
+		1, "Shannon", "McNeill", "Hoboken").Exec(); err != nil {
 		t.Fatal(err)
 	}
 
-	scanner := session.Query(`SELECT shannon_id, emp_city FROM shannon WHERE shannon_id = ?`, 1).Iter().Scanner()
+	scanner := session.Query(`SELECT first_name, last_name, city FROM person WHERE id = ?`, 1).Iter().Scanner()
 	for scanner.Next() {
-		var (
-			id   int
-			text string
-		)
-		err = scanner.Scan(&id, &text)
-		if err != nil {
+		var first, last, city string
+		if err := scanner.Scan(&first, &last, &city); err != nil {
 			t.Fatal(err)
 		}
-		fmt.Println("Details:", id, text)
+		fmt.Println("Details:", first, last, city)
 	}
 	// scanner.Err() closes the iterator, so scanner nor iter should be used afterwards.
 	if err := scanner.Err(); err != nil {

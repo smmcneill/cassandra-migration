@@ -1,5 +1,9 @@
-keyspace: herbie
+keyspace: hello
 profiles:
+  dev:
+    replication:
+      class: SimpleStrategy
+      replication_factor: 1
   prod:
     replication:
       class: SimpleStrategy

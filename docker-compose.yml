@@ -19,6 +19,6 @@ services:
       - "--"
       - "sh"
       - "-c"
-      - "cassandra-migrate -H cassandra -p 9042 migrate"
+      - "cassandra-migrate -H cassandra -p 9042 -m dev migrate"
     depends_on:
       - cassandra

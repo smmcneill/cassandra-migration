@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Create a new migration script with description $1
+# Create a new migration script with descriptive name $1
 function migration:new(){
     docker run \
         --rm \
@@ -21,6 +21,7 @@ function up(){
     docker compose up -d
 }
 
+# Shutdown containers
 function down(){
     docker compose down
 }

@@ -28,14 +28,14 @@ function down(){
 
 # Run tests against local DB
 function test(){
-    cass="$(docker ps -q -f name=cassandra)"
-    if [ -z "$cass" ]; then
+    cassandra_id="$(docker ps -q -f name=cassandra)"
+    if [ -z "$cassandra_id" ]; then
         up
     fi
 
     while :; do
-        val="$(docker ps -q -f name=migrate)"        
-        if [ -z "$val" ]; then
+        migrate_id="$(docker ps -q -f name=migrate)"        
+        if [ -z "$migrate_id" ]; then
             go test ./... -count=1
             break
         else
@@ -44,7 +44,7 @@ function test(){
         fi        
     done
 
-    if [ -z "$cass" ]; then
+    if [ -z "$cassandra_id" ]; then
         down
     fi
 }
